@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SECOND SOUFFLE - Du trottoir à ton dressing</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #00D9A3;
+            --primary-dark: #00B589;
+            --secondary: #2B3E50;
+            --accent: #FF6B6B;
+            --white: #FFFFFF;
+            --black: #0A0E12;
+            --gray-50: #F8F9FA;
+            --gray-100: #E9ECEF;
+            --gray-700: #495057;
+            --gray-900: #212529;
+            --gradient-primary: linear-gradient(135deg, #00D9A3 0%, #00B589 100%);
+            --gradient-dark: linear-gradient(135deg, #2B3E50 0%, #1A2530 100%);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+            --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.2);
+            --shadow-colored: 0 8px 32px rgba(0, 217, 163, 0.25);
+            --transition-base: 0.3s ease;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --spacing-2xl: 4rem;
+            --spacing-3xl: 6rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* LOADING */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(0, 217, 163, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* NAVIGATION */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all var(--transition-base);
+        }
+
+        .navbar.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            height: 50px;
+            width: auto;
+            transition: transform var(--transition-base);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            position: relative;
+            font-weight: 600;
+            color: var(--gray-700);
+            padding: 0.5rem 0;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width var(--transition-base);
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            padding: 0.75rem 1.5rem;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-colored);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 217, 163, 0.35);
+        }
+
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .burger span {
+            width: 28px;
+            height: 3px;
+            background: var(--gray-900);
+            border-radius: 3px;
+            transition: all var(--transition-base);
+        }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--secondary);
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('hero-background.jpg') center/cover no-repeat;
+            filter: brightness(0.4);
+        }
+
+        .hero-background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(43, 62, 80, 0.95) 0%, rgba(26, 37, 48, 0.98) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            background: rgba(0, 217, 163, 0.15);
+            border: 1px solid rgba(0, 217, 163, 0.3);
+            border-radius: 50px;
+            color: #33E3B5;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-highlight {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero .tagline {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: #33E3B5;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero .description {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--gray-100);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.8s ease 0.8s both;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all var(--transition-base);
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--white);
+            box-shadow: var(--shadow-colored);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 48px rgba(0, 217, 163, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease 1s both;
+        }
+
+        .stat-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            transition: all var(--transition-base);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 60px rgba(0, 217, 163, 0.2);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray-100);
+            font-weight: 500;
+        }
+
+        /* SECTIONS */
+        section {
+            padding: var(--spacing-3xl) var(--spacing-lg);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(0, 217, 163, 0.1);
+            color: var(--primary);
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-weight: 900;
+        }
+
+        .section-subtitle {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: var(--gray-700);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* PROBLEME */
+        #probleme {
+            background: linear-gradient(180deg, var(--white) 0%, var(--gray-50) 100%);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .problem-card {
+            padding: 2.5rem;
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: all var(--transition-base);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .problem-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-number {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent) 0%, #FF5252 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .problem-text {
+            font-size: 1.1rem;
+            color: var(--gray-700);
+            font-weight: 500;
+        }
+
+        /* SOLUTION */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: var(--spacing-xl);
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            box-shadow: var(--shadow-colored);
+            transition: all var(--transition-base);
+        }
+
+        .step:hover .step-number {
+            transform: scale(1.15) rotate(360deg);
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .step-description {
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+
+        .solution-highlight {
+            margin-top: var(--spacing-3xl);
+            padding: 3rem;
+            background: var(--gradient-primary);
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: var(--shadow-colored);
+        }
+
+        .solution-highlight h3 {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .solution-highlight p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        /* PRODUIT */
+        #produit {
+            background: var(--gray-50);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-base);
+        }
+
+        .product-card:hover {
+            transform: translateY(-20px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .product-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+            background: var(--gradient-primary);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--accent);
+            color: var(--white);
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .product-content {
+            padding: 2.5rem;
+        }
+
+        .product-title {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .product-price {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .product-features li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--gray-700);
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .product-features li::before {
+            content: '✓';
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        /* IMPACT */
+        .impact-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .impact-card {
+            padding: 3rem;
+            background: var(--white);
+            border-radius: 30px;
+            box-shadow: var(--shadow-md);
+            border-top: 5px solid var(--primary);
+            transition: all var(--transition-base);
+        }
+
+        .impact-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .impact-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 217, 163, 0.1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .impact-icon {
+            font-size: 3rem;
+        }
+
+        .impact-title {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            font-weight: 800;
+        }
+
+        .impact-stats {
+            list-style: none;
+        }
+
+        .impact-stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .impact-value {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* GALLERY */
+        #gallery {
+            background: var(--gray-50);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-base);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.2);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 0.9;
+        }
+
+        .gallery-text {
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* PARTICIPER */
+        #participer {
+            background: var(--gradient-dark);
+            color: var(--white);
+        }
+
+        #participer .section-title {
+            color: var(--white);
+        }
+
+        #participer .section-subtitle {
+            color: var(--gray-100);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 3rem;
+        }
+
+        .action-card {
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            text-align: center;
+            transition: all var(--transition-base);
+        }
+
+        .action-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-15px);
+        }
+
+        .action-icon-wrapper {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            background: rgba(0, 217, 163, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-icon {
+            font-size: 3.5rem;
+        }
+
+        .action-title {
+            font-size: 1.8rem;
+            color: #33E3B5;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .action-description {
+            color: var(--gray-100);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--black);
+            color: var(--gray-100);
+            padding: var(--spacing-3xl) var(--spacing-lg) var(--spacing-lg);
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: var(--spacing-2xl);
+            padding-bottom: var(--spacing-2xl);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-logo {
+            height: 60px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h4 {
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-100);
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: var(--spacing-lg);
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                flex-direction: column;
+                background: var(--white);
+                padding: 2rem;
+                transition: left var(--transition-base);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .burger {
+                display: flex;
+            }
+
+            section {
+                padding: var(--spacing-2xl) 1.5rem;
+            }
+
+            .product-grid,
+            .impact-wrapper,
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo-container">
+                <img src="logo.png" alt="SECOND SOUFFLE Logo" class="logo">
+                <span class="brand-text">SECOND SOUFFLE</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#hero" class="nav-link active">Accueil</a></li>
+                <li><a href="#probleme" class="nav-link">Le Problème</a></li>
+                <li><a href="#solution" class="nav-link">Notre Solution</a></li>
+                <li><a href="#produit" class="nav-link">Produits</a></li>
+                <li><a href="#impact" class="nav-link">Impact</a></li>
+                <li><a href="#gallery" class="nav-link">Galerie</a></li>
+                <li><a href="#participer" class="nav-cta">Participer</a></li>
+            </ul>
+            <div class="burger" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>🌱</span>
+                <span>Mode Éco-Responsable · Made in France</span>
+            </div>
+            
+            <h1>
+                Transformez les <span class="hero-highlight">mégots</span><br>
+                en mode <span class="hero-highlight">durable</span>
+            </h1>
+            
+            <p class="tagline">Du trottoir à ton dressing</p>
+            
+            <p class="description">
+                Nous recyclons 4 500 mégots de cigarettes pour créer une veste unique, 100% Made in France. 
+                Rejoignez la révolution de la mode circulaire.
+            </p>
+            
+            <div class="hero-cta">
+                <a href="#produit" class="btn btn-primary">
+                    <span>Découvrir nos produits</span>
+                    <span>→</span>
+                </a>
+                <a href="#solution" class="btn btn-secondary">
+                    <span>Comment ça marche ?</span>
+                </a>
+            </div>
+            
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-number">4 500</div>
+                    <div class="stat-label">Mégots par veste</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Déchet produit</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">-82%</div>
+                    <div class="stat-label">Émissions CO₂</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Made in France</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="probleme">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">🚨 Le Constat</span>
+                <h2 class="section-title">Le Fléau Mondial des Mégots</h2>
+                <p class="section-subtitle">
+                    Les mégots de cigarettes sont le déchet le plus répandu au monde.
+                </p>
+            </div>
+
+            <div class="problem-grid">
+                <div class="problem-card animate-on-scroll">
+                    <div class="problem-icon">🇫🇷</div>
+                    <div class="problem-number">30 M</div>
+                    <div class="problem-text">Mégots jetés par an en France</div>
+                </div>
+                <div class="problem-card animate-on-scroll">
+                    <div class="problem-icon">🌍</div>
+                    <div class="problem-number">137 000</div>
+                    <div class="problem-text">Mégots jetés par seconde dans le monde</div>
+                </div>
+                <div class="problem-card animate-on-scroll">
+                    <div class="problem-icon">💧</div>
+                    <div class="problem-number">500 L</div>
+                    <div class="problem-text">D'eau polluée par un seul mégot</div>
+                </div>
+                <div class="problem-card animate-on-scroll">
+                    <div class="problem-icon">⏱️</div>
+                    <div class="problem-number">12-15</div>
+                    <div class="problem-text">Années de décomposition</div>
+                </div>
+                <div class="problem-card animate-on-scroll">
+                    <div class="problem-icon">☠️</div>
+                    <div class="problem-number">4 000+</div>
+                    <div class="problem-text">Substances toxiques</div>
+                </div>
+                <div class="problem-card animate-on-scroll">
+                    <div class="problem-icon">🏙️</div>
+                    <div class="problem-number">40%</div>
+                    <div class="problem-text">Des déchets urbains</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="solution">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">💡 L'Innovation</span>
+                <h2 class="section-title">Notre Processus de Transformation</h2>
+                <p class="section-subtitle">
+                    Un procédé innovant en 4 étapes qui transforme un déchet toxique 
+                    en matière première textile de qualité.
+                </p>
+            </div>
+
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Collecte Citoyenne</h3>
+                    <p class="step-description">
+                        Grâce à nos bornes et au challenge #RemplisLaBouteille, 
+                        citoyens et entreprises collectent les mégots.
+                    </p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Dépollution Certifiée</h3>
+                    <p class="step-description">
+                        Traitement avec certification REACH pour éliminer 
+                        toutes les substances toxiques.
+                    </p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Recyclage Textile</h3>
+                    <p class="step-description">
+                        Les fibres d'acétate sont transformées en fil 
+                        textile haute qualité.
+                    </p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Confection Française</h3>
+                    <p class="step-description">
+                        Création artisanale dans nos ateliers en France. 
+                        Chaque veste est unique et traçable.
+                    </p>
+                </div>
+            </div>
+
+            <div class="solution-highlight">
+                <h3>4 500 mégots = 1 veste unique</h3>
+                <p>Chaque veste retire 2,25 millions de litres de pollution de notre environnement</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="produit">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">👕 Nos Créations</span>
+                <h2 class="section-title">Produits Éco-Responsables</h2>
+                <p class="section-subtitle">
+                    Design urbain, qualité française et impact positif.
+                </p>
+            </div>
+
+            <div class="product-grid">
+                <div class="product-card animate-on-scroll">
+                    <div class="product-image-wrapper">
+                        <img src="veste-urbaine.jpg" alt="Veste Urbaine" class="product-image">
+                        <span class="product-badge">⭐ Bestseller</span>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Veste Urbaine Classic</h3>
+                        <div class="product-price">129€</div>
+                        <ul class="product-features">
+                            <li>4 500 mégots recyclés</li>
+                            <li>100% Made in France</li>
+                            <li>Certification REACH</li>
+                            <li>Design urbain moderne</li>
+                            <li>Traçabilité QR code</li>
+                            <li>Garantie 2 ans</li>
+                        </ul>
+                        <a href="#participer" class="btn btn-primary" style="width: 100%;">Précommander</a>
+                    </div>
+                </div>
+
+                <div class="product-card animate-on-scroll">
+                    <div class="product-image-wrapper">
+                        <img src="doudou-educatif.jpg" alt="Doudou Éducatif" class="product-image">
+                        <span class="product-badge">🌱 Nouveau</span>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Doudou Éducatif</h3>
+                        <div class="product-price">29€</div>
+                        <ul class="product-features">
+                            <li>500 mégots recyclés</li>
+                            <li>Sensibilisation enfants</li>
+                            <li>Hypoallergénique</li>
+                            <li>Lavable 30°</li>
+                            <li>Design coloré</li>
+                            <li>Made in France</li>
+                        </ul>
+                        <a href="#participer" class="btn btn-primary" style="width: 100%;">Commander</a>
+                    </div>
+                </div>
+
+                <div class="product-card animate-on-scroll">
+                    <div class="product-image-wrapper">
+                        <img src="solution-b2b.jpg" alt="Solution B2B" class="product-image">
+                        <span class="product-badge">🏢 Entreprises</span>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Solution B2B Corporate</h3>
+                        <div class="product-price">Sur devis</div>
+                        <ul class="product-features">
+                            <li>Programme RSE</li>
+                            <li>Collecte entreprise</li>
+                            <li>Vestes personnalisées</li>
+                            <li>Rapport impact</li>
+                            <li>Team building</li>
+                            <li>Accompagnement</li>
+                        </ul>
+                        <a href="#participer" class="btn btn-primary" style="width: 100%;">Nous contacter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="impact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">📊 Mesure d'Impact</span>
+                <h2 class="section-title">Notre Triple Impact</h2>
+                <p class="section-subtitle">
+                    Un modèle rentable qui génère un impact positif mesurable.
+                </p>
+            </div>
+
+            <div class="impact-wrapper">
+                <div class="impact-card animate-on-scroll">
+                    <div class="impact-icon-wrapper">
+                        <div class="impact-icon">🌱</div>
+                    </div>
+                    <h3 class="impact-title">Impact Environnemental</h3>
+                    <ul class="impact-stats">
+                        <li class="impact-stat-item">
+                            <span>Mégots recyclés An 1</span>
+                            <span class="impact-value">400K</span>
+                        </li>
+                        <li class="impact-stat-item">
+                            <span>Eau sauvée</span>
+                            <span class="impact-value">200M L</span>
+                        </li>
+                        <li class="impact-stat-item">
+                            <span>Réduction CO₂</span>
+                            <span class="impact-value">-82%</span>
+                        </li>
+                        <li class="impact-stat-item">
+                            <span>Objectif 2030</span>
+                            <span class="impact-value">10M/an</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="impact-card animate-on-scroll">
+                    <div class="impact-icon-wrapper">
+                        <div class="impact-icon">👥</div>
+                    </div>
+                    <h3 class="impact-title">Impact Social</h3>
+                    <ul class="impact-stats">
+                        <li class="impact-stat-item">
+                            <span>Emplois directs</span>
+                            <span class="impact-value">5</span>
+                        </li>
+                        <li class="impact-stat-item">
+                            <span>Réinsertion</span>
+                            <span class="impact-value">50%</span>
+                        </li>
+                        <li class="impact-stat-item">
+                            <span>Étudiants sensibilisés</span>
+                            <span class="impact-value">5 000</span>
+                        </li>
+                        <li class="impact-stat-item">
+                            <span>Ateliers</span>
+                            <span class="impact-value">3</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="impact-card animate-on-scroll">
+                    <div class="impact-icon-wrapper">
+                        <div class="impact-icon">💼</div>
+                    </div>
+                    <h3 class="impact-title">Impact Économique</h3>
+                    <ul class="impact-stats">
+                        <li class="impact-stat-item">
+                            <span>CA An 1</span>
+                            <span class="impact-value">190K€</span>
+                        </li>
+                        <li class="impact-stat-item">
+                            <span>Marge nette</span>
+                            <span class="impact-value">19,3%</span>
+                        </li>
+                        <li class="impact-stat-item">
+                            <span>Production locale</span>
+                            <span class="impact-value">100%</span>
+                        </li>
+                        <li class="impact-stat-item">
+                            <span>Rentabilité</span>
+                            <span class="impact-value">An 1</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">📸 Galerie</span>
+                <h2 class="section-title">Notre Univers en Images</h2>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="process-collecte.jpg" alt="Collecte" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <div class="gallery-text">Collecte Citoyenne</div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="process-depollution.jpg" alt="Dépollution" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <div class="gallery-text">Dépollution</div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="process-recyclage.jpg" alt="Recyclage" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <div class="gallery-text">Recyclage Textile</div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="atelier-confection.jpg" alt="Atelier" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <div class="gallery-text">Confection France</div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="veste-portee.jpg" alt="Veste portée" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <div class="gallery-text">Le Résultat</div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="impact-environnement.jpg" alt="Impact" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <div class="gallery-text">Notre Impact</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="participer">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge" style="background: rgba(255, 255, 255, 0.15); color: #33E3B5;">
+                    🚀 Agissons Ensemble
+                </span>
+                <h2 class="section-title">Rejoignez le Mouvement</h2>
+                <p class="section-subtitle">
+                    Que vous soyez citoyen, entreprise ou investisseur, participez à cette révolution écologique.
+                </p>
+            </div>
+
+            <div class="action-grid">
+                <div class="action-card">
+                    <div class="action-icon-wrapper">
+                        <div class="action-icon">🗑️</div>
+                    </div>
+                    <h3 class="action-title">Challenge Citoyen</h3>
+                    <p class="action-description">
+                        Rejoignez #RemplisLaBouteille ! Collectez, déposez et gagnez des réductions.
+                    </p>
+                    <a href="#" class="btn" style="background: var(--white); color: var(--secondary);">Je participe</a>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon-wrapper">
+                        <div class="action-icon">🏢</div>
+                    </div>
+                    <h3 class="action-title">Partenariat B2B</h3>
+                    <p class="action-description">
+                        Entreprises : boostez votre RSE avec notre programme clé en main.
+                    </p>
+                    <a href="#" class="btn" style="background: var(--white); color: var(--secondary);">Devenir partenaire</a>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon-wrapper">
+                        <div class="action-icon">💰</div>
+                    </div>
+                    <h3 class="action-title">Investir</h3>
+                    <p class="action-description">
+                        Rejoignez une aventure rentable et à impact. Rentabilité An 1.
+                    </p>
+                    <a href="#" class="btn" style="background: var(--white); color: var(--secondary);">Pitch deck</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <img src="logo.png" alt="SECOND SOUFFLE" class="footer-logo">
+                    <p>Transformons les mégots en mode durable.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a href="#hero">Accueil</a></li>
+                        <li><a href="#probleme">Le Problème</a></li>
+                        <li><a href="#solution">Notre Solution</a></li>
+                        <li><a href="#produit">Produits</a></li>
+                        <li><a href="#impact">Impact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Participer</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Challenge Citoyen</a></li>
+                        <li><a href="#">Partenariats B2B</a></li>
+                        <li><a href="#">Investir</a></li>
+                        <li><a href="#">Boutique</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:contact@secondsouffle.fr">contact@secondsouffle.fr</a></li>
+                        <li><a href="#">Presse</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 SECOND SOUFFLE. Tous droits réservés.</p>
+                <p style="color: var(--primary); font-weight: 600; margin-top: 1rem;">
+                    Du trottoir à ton dressing 🌱
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            document.getElementById('pageLoader').classList.add('hidden');
+        });
+
+        const navbar = document.getElementById('navbar');
+        const burger = document.getElementById('burger');
+        const navMenu = document.getElementById('navMenu');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        burger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
